@@ -65,10 +65,12 @@ int main() {
 * **`ret2main` 패턴**: 그러나 `system` 함수를 호출한 후에는 다시 `main` 함수로 돌아와서 버퍼 오버플로우를 일으켜야 한다. 이러한 공격 패턴을 `ret2main`이라고 부른다.
 
 
-### 가젯 주소 구하
+### 가젯 주소 구하기
 
 <img width="927" height="157" alt="image" src="https://github.com/user-attachments/assets/fa20a022-0670-4969-a688-ac2622c31ee2" />
 
+
+### 익스플로잇 코드
 
 ```python
 from pwn import *
