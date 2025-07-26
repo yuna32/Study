@@ -30,37 +30,6 @@ NX & ASLR 문서화
     반면, NX가 적용되지 않은 바이너리는 스택 영역([stack])에 `rwx` (읽기, 쓰기, 실행)
 권한이 존재하는 것을 확인할 수 있다.
 
-#### NX가 적용된X & ASLR 문서화
-===============
-
-## 1. NX란
-
-### 공격자가 셸코드를 실행할 수 있는 조건
-
-특정 프로그램에서 셸코드를 실행할 수 있으려면 다음 세 가지 조건이 충족되어야 한다.
-
-1.  어떤 버퍼에서 스택 버퍼 오버플로우 취약점이 발생하여 이를 악용해 반환 주소를 조작할 수 있어야 한다.
-2.  해당 버퍼의 주소를 알 수 있어야 한다. (버퍼에 입력한 셸코드를 쉽게 활용)
-3.  해당 버퍼가 실행 가능한 메모리 영역에 있어야 한다.
-
-### 보호 기법
-
-이러한 세 가지 조건을 막기 위해 다음과 같은 보호 기법들이 도입되었다.
-
-1.  **스택 카나리 (Stack Canary):** 반환 주소 조작을 어렵게 만들고 버퍼 오버플로우를 탐지하기 위해 도입되었다.
-2.  **ASLR (Address Space Layout Randomization):** 메모리 주소 예측을 어렵게 만든다.
-   메모리에 임의의 주소를 할당하여 공격자가 예측하기 어렵게 한다.
-4.  **NX (No-eXecute):** 셸코드 실행을 막는다.
-
-    * **개념:** 실행되는 메모리 영역과 쓰기(write)가 가능한 메모리 영역을 분리하는 보호 기법이다.
-    * **목적:** 특정 메모리 영역에 쓰기 권한이 있더라도 실행 권한은 없게 해서
-       스택 등에 입력된 셸코드가 실행되는 것을 방지한다.
-    * **동작 방식:** CPU가 NX를 지원하며 컴파일러 옵션을 통해 바이너리에 NX를 적용할 수 있다.
-      NX가 적용된 바이너리는 실행될 때 각 메모리 영역에 필요한 권한만을 부여받는다.
-    * **확인 방법:** gdb나 vmmmap을 통해 NX 적용 전후의 메모리 맵을 비교하면
-       NX가 적용된 바이너리는 코드 영역 외에는 실행 권한이 없음을 확인할 수 있다.
-    반면, NX가 적용되지 않은 바이너리는 스택 영역([stack])에 `rwx` (읽기, 쓰기, 실행)
-권한이 존재하는 것을 확인할 수 있다.
 
 #### NX가 적용된 바이너리
 
@@ -345,8 +314,68 @@ PLT(Procedure Linkage Table)와 GOT(Global Offset Table)는 동적 링크된 라
   이렇게 해서 매번 심볼을 탐색하는 과정을 생략해 효율성을 높인다.
 
 
+### Resolve와 GOT
+
+```c
+#include <stdio.h>
+
+int main() {
+  puts("Resolving address of 'puts'.");
+  puts("Get address from GOT");
+}
+```
+예제 코드를 사용해 살펴본다. 
+
+#### resolve되기 전
+
+<img width="936" height="206" alt="image" src="https://github.com/user-attachments/assets/c8532c7a-ee2c-418d-b780-104677b75867" />
+
+puts의 GOT를 확인해보면 아직 puts의 주소를 찾기전이므로 puts의 GOT 엔트리인 0x404018의 함수 주소 대신 .plt 섹션 어딘가의 주소인 0x401030이 적혀 있다.
+
+<img width="901" height="80" alt="image" src="https://github.com/user-attachments/assets/a034ca19-f02c-463a-966c-2c35ad3c7626" />
+
+<img width="1446" height="388" alt="image" src="https://github.com/user-attachments/assets/9f78e4c0-3fda-4693-a270-19ed8cc73a5b" />
+
+main()에서 puts@plt를 호출하는 지점에 중단점을 설정하고 함수 내부로 들어가서 살펴보면 _dl_runtime_resolve_xsavec라는 함수가 실행되는데 이 함수에 의해서 puts의 주소가 구해지고 GOT에 주소가 써진다.
+
+
+<img width="1280" height="287" alt="image" src="https://github.com/user-attachments/assets/79f2ed11-c769-4ba4-b6d9-f59ea22a59b5" />
+
+ni로 _dl_runtime_resolve_xsavec 함수 안으로 진입후 finish로 함수를 빠져나와서 GOT를 확인해보면 puts의 GOT 엔트리에 libc 영역에 puts 주소인 0x7ffff7e2bbe0이 쓰여있는 것을 확인 할 수 있다.
 
 
 
-
+#### resolve 된 후 
   
+<img width="1352" height="350" alt="image" src="https://github.com/user-attachments/assets/e58060c3-e5a0-4925-9532-d8211ab53fc0" />
+
+두 번째로 puts@plt를 호출할 때는 GOT에 puts 주소가 쓰여있어서 바로 puts가 실행된다.
+
+
+### 시스템 해킹의 관점에서 본 PLT와 GOT
+
+* PLT와 GOT는 동적 링크된 바이너리에서 라이브러리 함수의 주소를 찾고, 기록할 때 사용되는 중요한 테이블이다.
+* 그런데 시스템 해커의 관점에서 보면 PLT에서 GOT를 참조하여 실행 흐름을 옮길 때 GOT의 값을 검증하지 않는다는 보안상의 약점이 있다.
+* 따라서 앞의 예에서 GOT에 저장된 puts의 주소를 공격자가 임의로 변경할 수 있으면 두 번째로 puts가 호출될 때 공격자가 원하는 코드가 실행되게 할 수 있다.
+
+got 바이너리에서 puts의 GOT 값을 "AAAAAAAA"로 변경해보면 실행 흐름이 "AAAAAAAA"로 옮겨진 것을 확인할 수 있다. 이러한 공격 기법을 **GOT Overwrite** 라고 한다.
+
+-------------
+## Quiz
+
+#### Q1. 동적 링크된 바이너리는 정적 링크된 바이너리에 비해 바이너리의 크기가 작다는 장점이 있다.   
+
+A1. O
+
+#### Q2. PLT에서 GOT를 참조하여 실행 흐름을 옮길 때, GOT의 값은 반드시 라이브러리 함수의 주소를 가리켜야 한다.  
+
+A2. X
+
+#### Q3. 정적 링크된 바이너리에서 처음 함수 func를 호출하면, runtime resolve를 거쳐야 해서 시간이 소모된다.   
+
+A3. X
+
+#### Q4. GOT에는 runtime resolve를 하기 위한 코드가 들어있다.   
+
+A4. X
+
