@@ -37,7 +37,7 @@
 ## 3. OOB 예제
 ### Proof-of-Concept
 
-```
+```c
 #include <stdio.h>
 
 int main() {
@@ -63,13 +63,12 @@ int main() {
   즉 OOB를 방지하는 것은 전적으로 개발자의 몫이다.
 * arr[0]과 arr[100]은 주소 차이가 0x7ffe8a3b75f0 - 0x7ffe8a3b7460 = 0x190,
   0x190은 16진수 값이므로 10진수로 변환하면
-  1 * 16^2 + 9 * 16^1 + 0 * 16^0 = 256 + 144 + 0 = 400만큼 난다. 배열의 범위를 벗어난 인덱스를 참조해도
-  주소 계산식을 그대로 사용함을 확인할 수 있다.
+  1 * 16^2 + 9 * 16^1 + 0 * 16^0 = 256 + 144 + 0 = 400만큼 난다. 배열의 범위를 벗어난 인덱스를 참조해도 주소 계산식을 그대로 사용함을 확인할 수 있다.
 
   
 ### 임의 주소 읽기
 
-```
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -128,7 +127,7 @@ int main() {
 
 ### 임의 주소 쓰기
 
-```
+```c
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -173,7 +172,7 @@ gdb로 stu와 isAdmin의 주소를 확인해보면 isAdmin이 stu보다 240바�
 
 #### Q1. OOB 취약점을 방어하기 위해 [A] 위치에 들어갈 올바른 검증 코드는?
 
-```
+```c
 #include <stdio.h>
 int main() {
   int buf[0x10];
