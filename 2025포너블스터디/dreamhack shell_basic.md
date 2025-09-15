@@ -57,7 +57,9 @@ void main(int argc, char *argv[]) {
 추가로 flag의 위치는 "/home/shell_basic/flag_name_is_loooooong"이라는 정보도 주어졌다.
 
 즉 open-read-write를 사용해서 flag 출력 쉘코드 작성하는 문제이다.
+
 orw 쉘코드는 쓰기 번거로워서 좀 더 쉽게 풀려고 dreamhack 강의에서도 언급된 shellcraft 모듈을 사용하기로 했다.
+
 https://docs.pwntools.com/en/stable/shellcraft/amd64/html 참고해서 작성했다.
 
 ------------------------------
@@ -83,4 +85,6 @@ https://docs.pwntools.com/en/stable/shellcraft/amd64/html 참고해서 작성했
 
 
 <img width="717" height="162" alt="image" src="https://github.com/user-attachments/assets/4243a68f-69ef-4199-bc1a-dbf845f0bfb3" />
+
+
 이렇게 플래그를 얻어낼 수 있다.
