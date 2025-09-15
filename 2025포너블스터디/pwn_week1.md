@@ -4,10 +4,9 @@ pwn_week1
 
 ## 문제 분석
 
-```c
 주어진 c코드를 보면
 
-
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
