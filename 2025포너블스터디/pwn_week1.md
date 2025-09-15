@@ -139,7 +139,7 @@ p.interactive()
 * `chunk = p.recvuntil(b' = ')` : " = "(문제 프롬프트 끝)를 만날 때까지 출력(바이트)을 읽음. 문제 한 줄(프롬프트 포함)을 확보하는 역할. 
 * `m = pat.search(chunk)` `if not m: chunk += p.recv(timeout=0.1)`: 정규식으로 숫자 추출 시도. 실패하면 아주 짧게 추가 수신해서 다시 시도.
 * `a, b = int(m.group(1)), int(m.group(2))` `p.sendline(str(a + b).encode())`: 추출한 두 수를 정수로 변환해 합을 구하고 sendline으로 답(문자열+개행)을 전송
-* `p.interactive()`: 20문제를 자동으로 풀고 나서 프로세스와 직접 연결(터미널처럼 입출력), 남은 출력(Success! Easy~)을 보고 추가로 조작 가능.
+* `p.interactive()`: 20문제를 자동으로 풀고 나서 프로세스와 직접 연결.
 
 
 ### 실행 결과
