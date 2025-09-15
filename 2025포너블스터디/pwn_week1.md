@@ -99,7 +99,7 @@ target_addr(0x0000555555555303)에 있는 jmp 명령어를 success_addr(0x000055
 
 <img width="586" height="222" alt="image" src="https://github.com/user-attachments/assets/afe07cff-b2ee-470d-bcbd-382888ac1d31" />
 
-메모리 수정하고, continue 하면 어떤 답을 입력하든 관계없이 프로그램은 Wrong answer!를 출력하는 코드를 건너뛰고, 패치된 jmp 명령어를 통해 Success! Easy~ 메시지를 출력하는 코드로 바로 이동하게 된다.
+메모리 수정하고 continue 하면 어떤 답을 입력하든 관계없이 프로그램은 Wrong answer!를 출력하는 코드를 건너뛰고, 패치된 jmp 명령어를 통해 Success! Easy~ 메시지를 출력하는 코드로 바로 이동하게 된다.
 
 
 -----------------
