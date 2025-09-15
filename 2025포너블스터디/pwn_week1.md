@@ -145,7 +145,8 @@ p.interactive()
 ### 실행 결과
 
 
-<img width="937" height="163" alt="image" src="https://github.com/user-attachments/assets/f235518d-a1ff-4f61-ba27-0fa0822f7159" />
+<img width="937" height="140" alt="image" src="https://github.com/user-attachments/assets/1038c8a6-de45-44fe-a2d4-2954145736b0" />
+
 
 
 
