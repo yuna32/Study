@@ -192,8 +192,8 @@ p.interactive()
 #### 1. 카나리 Leak
 
 
-* `p.sendafter('> ', 'P')`: 프로그램의 프롬프트(`> `)가 나올 때까지 기다린 후 명령어를 보내 이름을 출력하는 기능을 활성화한다.
-* `p.sendlineafter(' : ', bytes(str(i),'utf-8'))`: 명령어를 보낸 후 나오는 프롬프트(` : `)에 원하는 오프셋을 보낸다. scanf에서 그냥 sendline쓰니까 계속 오류가 나서 sendafter하고 sendlineafter를 써야 했다.
+* `p.sendafter('> ', 'P')`: 프로그램의 프롬프트(`> `)가 나올 때까지 기다린 후 `P` 명령어를 보내 이름을 출력하는 기능을 활성화한다.
+* `p.sendlineafter(' : ', bytes(str(i),'utf-8'))`: `P` 명령어를 보낸 후 나오는 프롬프트(` : `)에 원하는 오프셋을 보낸다. `scanf` 때문인지 그냥 `sendline` 쓰니까 계속 오류가 나서 `sendafter` 하고 `sendlineafter` 를 써야 했다.
 * `canary = int(canary, 16)`: 모은 16진수 문자열을 최종적으로 정수형 카나리 값으로 변환한다. 
 
 #### 2. 페이로드 전송
