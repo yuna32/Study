@@ -118,7 +118,7 @@ ret 확인
 
 ```python
 from pwn import *
-context.log_level = 'debug'
+
 context(arch='amd64', os='linux')
 
 p = remote("host1.dreamhack.games", 21518)
