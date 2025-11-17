@@ -2,7 +2,7 @@ Emporium split(x64) 라이트업
 =========================
 
 
-## 1.  IDA
+## 1.  코드 분석
 
 ### main
 <img width="652" height="182" alt="image" src="https://github.com/user-attachments/assets/c2aadb86-0cf6-430e-ad63-5b9fa70917d6" />
