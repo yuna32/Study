@@ -154,7 +154,7 @@ CMP r0, r1 명령어를 실행하고, 오른쪽 레지스터 창에서 CPSR 레�
 
 `MOVNE r3, #200`은 무시되고 r3 레지스터의 값은 그대로 0에서 변하지 않는 것을 확인 가능하다. 
 
-ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+-------------
 
 <img width="900" height="223" alt="image" src="https://github.com/user-attachments/assets/47b4e2cd-2626-43e8-8299-27a02e4b897e" />
 
