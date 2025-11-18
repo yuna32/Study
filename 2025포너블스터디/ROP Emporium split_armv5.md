@@ -1,10 +1,14 @@
 ROP Emporium split_armv5
 ===================
 
-익스플로잇 과정 자체는 arm64와 같다.
+익스플로잇 과정 자체는 amd64와 같다.
 
 arm 때문인지 가젯 구하는데에 ROPgadget도 ropper도 안먹혀서 다른 라이트업을 참고했다. > https://github.com/0xSoEasY/ROPemporium/blob/master/ARMv5/1-split/solve.py     
 (이건 주소 하드코딩한 방식이라 오프셋만 참고했다) 
+
+
+libc 파일도 32비트로 찾아와야 하므로 `ls -l /usr/arm-linux-gnueabi/lib/libc.so.6` 로 경로를 찾고 복사해준다. 
+
 
 ```python
 #!/usr/bin/env python3
