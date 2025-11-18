@@ -11,7 +11,6 @@ libc 파일도 32비트로 찾아와야 하므로 `ls -l /usr/arm-linux-gnueabi/
 
 
 ```python
-#!/usr/bin/env python3
 from pwn import *
 
 FILE = "./split_armv5"  
