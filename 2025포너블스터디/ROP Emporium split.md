@@ -87,7 +87,6 @@ libc 파일 가져와서 쓰는 방법으로는
 
 
 ```python
-#!/bin"python3
 from pwn import *
 
 e = ELF('./split')
