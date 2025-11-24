@@ -2,7 +2,7 @@ dreamhack format string bug
 ==================
 
 
-**목표: change의 값을 1337로 바꾸기**
+**목표: changeme의 값을 1337로 바꾸기**
 
 
 ```c
