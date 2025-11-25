@@ -162,4 +162,4 @@ p.interactive()
 <img width="873" height="725" alt="image" src="https://github.com/user-attachments/assets/b4214efe-bcb6-4bb6-8924-dfec570f0d70" />
 
 * 원격 서버는 다른 libc를 써서인지 당연히 EOF가 떴다.
-* 로컬에서는 쉘을 성공적으로 딸 수는 있었지만 flag를 어떻게 찾는지 모르겠다.
+* 로컬에서는 쉘을 딸 수는 있었지만 flag를 어떻게 찾는지 모르겠다.
