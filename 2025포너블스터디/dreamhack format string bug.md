@@ -177,6 +177,9 @@ p.sendline(payload)
 p.interactive()
 ```
 
+* 원격으로 연결해서 해줄때는 b'%17$p를 15로 바꿔준다. (환경차이) 
 
-<img width="776" height="660" alt="image" src="https://github.com/user-attachments/assets/7619c4d6-2a17-425c-a2cb-1080d2582c4a" />
+
+<img width="678" height="363" alt="image" src="https://github.com/user-attachments/assets/e5adc678-735c-4908-a8a4-05004b8edafc" />
+
 
