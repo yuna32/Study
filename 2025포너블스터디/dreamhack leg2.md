@@ -40,10 +40,13 @@ gdb에서 vuln 디스어셈블해보면 이렇게 나온다.
 
 
 
-## libc 릭하기
+## libc 문제 발생
 
 
 <img width="879" height="390" alt="image" src="https://github.com/user-attachments/assets/b636a374-de8c-4e36-bfae-3212ff5b87c0" />
+
+<img width="1174" height="105" alt="스크린샷 2025-11-25 151109" src="https://github.com/user-attachments/assets/820ec372-00e5-49a9-b305-18696123c5a7" />
+
 
 <img width="1287" height="431" alt="image" src="https://github.com/user-attachments/assets/2064ee9b-d0a3-47a0-85e5-76976d2bc94e" />
 
