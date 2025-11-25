@@ -8,7 +8,7 @@ dreamhack leg2
 ghidra로 main함수 까보면
 
 
-```
+```c
 undefined8 main(void)
 
 {
