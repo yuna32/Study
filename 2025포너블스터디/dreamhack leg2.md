@@ -162,4 +162,8 @@ p.interactive()
 <img width="873" height="725" alt="image" src="https://github.com/user-attachments/assets/b4214efe-bcb6-4bb6-8924-dfec570f0d70" />
 
 * 원격 서버는 다른 libc를 써서인지 당연히 EOF가 떴다.
-* 로컬에서는 쉘을 딸 수는 있었지만 flag를 어떻게 찾는지 모르겠다.
+
+<img width="472" height="531" alt="image" src="https://github.com/user-attachments/assets/25739c51-d092-40c7-b978-9a583156346a" />
+
+./run.sh chal 후 cat ./flag 해서 이렇게 플래그가 뜨긴 하는데 이건 로컬 테스트용 더미 플래그고 실제 플래그를 얻으려면 무조건 드림핵 원격 서버에 연결해야 한다고 한다.    현재 내 상황에서는 불가능하므로 일단 로컬 테스트에 성공했다는 데까지만 하기로 했다. 원격 서버 연결하려면 일단 musl부터 없애고 싹다 초기화해야해서... 
+
