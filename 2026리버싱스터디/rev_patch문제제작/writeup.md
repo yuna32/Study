@@ -71,7 +71,7 @@ $$Flag[i] = enc\_flag[i] \oplus (InitialKey + i)$$
 * **역산 과정:**
 1. 플래그의 첫 글자는 반드시 **'F' (0x46)**
 2. 암호화된 데이터의 첫 바이트는 **0x30**입니다.
-3. 수식: $0x30 \oplus \text{Real\_Key} = 0x46$
+3. 수식: $0x30 \oplus \text{Real\Key} = 0x46$
 4. 계산: $0x30 \oplus 0x46 = \mathbf{0x76}$
 
 <img width="344" height="90" alt="스크린샷 2026-02-20 232907" src="https://github.com/user-attachments/assets/a95c4892-8420-466f-b69b-c2c6ddb34d1f" />
