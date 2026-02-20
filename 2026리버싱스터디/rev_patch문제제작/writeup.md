@@ -81,7 +81,7 @@ $$Flag[i] = enc\_flag[i] \oplus (InitialKey + i)$$
 
 ### 4. 최종 플래그 확인
 
-키를 `0x76`으로 수정한 후 실행을 계속하면 메모리 덤프 창에서 문자열이 실시간으로 복호화되는 것을 확인 가능
+키를 `0x76`으로 수정한 후 실행을 계속하면 플래그 출력
 
 
 <img width="612" height="162" alt="image" src="https://github.com/user-attachments/assets/6c527067-a338-4a95-a78d-960e4260b6fa" />
