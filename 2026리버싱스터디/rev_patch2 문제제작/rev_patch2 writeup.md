@@ -1,4 +1,4 @@
-# Writeup (출제자용)
+# rev_patch2 Writeup 
 
 ## 플래그
 
